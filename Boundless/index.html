@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Git Ready</title>
+	
+	<meta name="description" content="A jQuery library for modern HTML presentations">
+	<meta name="author" content="Caleb Troughton">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+	
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="../core/deck.core.css">
+	<link rel="stylesheet" href="../extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="../extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="../extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="../extensions/status/deck.status.css">
+	<link rel="stylesheet" href="../extensions/hash/deck.hash.css">
+	<link rel="stylesheet" href="../extensions/scale/deck.scale.css">
+	
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="../themes/boundless/style.css">
+	
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="../themes/transition/horizontal-slide.css">
+	
+	<script src="../modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides -->
+<section class="slide" id="title-slide">
+	<h1>Get Ready For Git!</h1>
+</section>
+
+<section class="slide" id="basic-commands">
+	<p>You all know how to pull a repo, switch between branches, initiate a merge, etc. Here are the things I usually have to look up when I need them.</p>
+	<pre><code>
+# add all changes to previously tracked files (add equivalent of commit -a)
+$ git add -u 
+
+# add everything (but NOT deletions)
+$ git add .
+
+# add tracked, untracked, and deletions
+$ git add -A
+
+# remove something you've added
+$ git reset HEAD <file>
+
+# delete a branch
+$ git branch -d <branch_name>
+
+# fetch changes from the server without changing your working copy
+$ git fetch			# note this will fetch all branches of the repo
+
+# undo a local merge; get the hash from running git log
+$ git reset --hard <commit_hash>
+
+# undo a merge that has been PUSHED
+$ git revert -m 1 <commit_hash>
+	</pre></code>
+</section>
+
+
+<section class="slide" id="Config">
+	<h2>Git Basics</h2>
+	<p>My .gitconfig</p>
+	<pre><code>
+		[user]
+			name = Evan Davis
+			email = evan@boundless.com
+		[credential]
+			helper = osxkeychain
+		[color]
+			diff = true
+		[merge]
+			tool = p4merge
+		[mergetool]
+			prompt = false
+			keepBackup = false
+			tool = p4merge
+		[mergetool "p4merge"]
+			cmd = /usr/local/bin/p4merge >>
+			<< "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+			keepTemporaries = false
+			trustExitCode = false
+			keepBackup = false
+		[diff]
+		    tool = "bbdiff"
+		[difftool]
+			prompt = false
+		[difftool "bbdiff"]
+		    cmd = /usr/local/bin/bbdiff >>
+		    <<--wait --resume "$LOCAL" "$REMOTE"
+		[alias]
+			a = add
+			ci = commit -m
+			ca = commit -am
+			co = checkout
+		        b = branch
+			f = fetch
+			m = merge
+			up = pull
+		[push]
+			default = current
+	</code></pre>
+	<small>>> << denotes line-wrap</small>
+</section>
+
+<section class="slide" id="tool-setup">
+	<h2>Setting up p4merge</h2>
+	<ol>
+		<li>Download and install <a href="http://www.perforce.com/product/components/perforce_visual_merge_and_diff_tools">P4V: Visual Client</a></li>
+		<li>Add this script at <pre>/usr/local/bin/p4merge</pre>
+			<pre><code>#!/bin/sh
+				/Applications/p4merge.app/Contents/MacOS/p4merge $*
+			</pre></code>
+		</li>
+		<li>Run <pre>chmod +x p4merge</pre> so the script can run as an executable.</li>
+		<li>Run the script with <pre>git mergetool</pre></li>
+	</ol>
+</section>
+
+<section class="slide" id="environment">
+	<h2>Our Setup</h2>
+	<h3>4 Kinds of Branches</h3>
+	<p>The map</p>
+		<img src="../themes/boundless/releaseFlow.png" />
+</section>
+
+<section class="slide" id="doing-work">
+	<h2>Doing Work</h2>
+	<section class="slide" id="branching">
+		<p>Make a branch:</p>
+		<pre>
+$ git checkout staging 
+$ git checkout -b NAME
+		</pre>
+	</section>
+	<section class="slide" id="updating">
+		<p>You've done some work, but there have been hotfixes. You need to get the latest updates to the main branches.</p>
+		<pre><code>
+# Get changes from staging and master
+$ git pull -f origin staging && git pull -f origin master
+		</code></pre>
+	</section>
+	<section class="slide" id="rebasing">
+		<p>Maybe you want to clean up partial commits you made along the way</p>
+		<pre>$ git rebase -i staging</pre>
+	</section>
+	<section class="slide" id="merging">
+		<p>Merge into <strong>Staging</strong>, not master.</p>
+	</section>
+</section>
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../jquery-1.7.2.min.js"><\/script>')</script>
+
+<!-- Deck Core and extensions -->
+<script src="../core/deck.core.js"></script>
+<script src="../extensions/hash/deck.hash.js"></script>
+<script src="../extensions/menu/deck.menu.js"></script>
+<script src="../extensions/goto/deck.goto.js"></script>
+<script src="../extensions/status/deck.status.js"></script>
+<script src="../extensions/navigation/deck.navigation.js"></script>
+<script src="../extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck -->
+<script>
+$(function() {
+	$.deck('.slide');
+});
+</script>
+
+</body>
+</html>
