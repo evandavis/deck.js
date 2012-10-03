@@ -38,6 +38,36 @@
 	<h1>Get Ready For Git!</h1>
 </section>
 
+<section class="slide" id="basic-commands">
+	<p>You all know how to pull a repo, switch between branches, initiate a merge, etc. Here are the things I usually have to look up when I need them.</p>
+	<pre><code>
+# add all changes to previously tracked files (add equivalent of commit -a)
+$ git add -u 
+
+# add everything (but NOT deletions)
+$ git add .
+
+# add tracked, untracked, and deletions
+$ git add -A
+
+# remove something you've added
+$ git reset HEAD <file>
+
+# delete a branch
+$ git branch -d <branch_name>
+
+# fetch changes from the server without changing your working copy
+$ git fetch			# note this will fetch all branches of the repo
+
+# undo a local merge; get the hash from running git log
+$ git reset --hard <commit_hash>
+
+# undo a merge that has been PUSHED
+$ git revert -m 1 <commit_hash>
+	</pre></code>
+</section>
+
+
 <section class="slide" id="Config">
 	<h2>Git Basics</h2>
 	<p>My .gitconfig</p>
@@ -110,7 +140,7 @@
 		<p>Make a branch:</p>
 		<pre>
 $ git checkout staging 
-$ git checkout -b feature/NAME=
+$ git checkout -b NAME
 		</pre>
 	</section>
 	<section class="slide" id="updating">
@@ -122,10 +152,10 @@ $ git pull -f origin staging && git pull -f origin master
 	</section>
 	<section class="slide" id="rebasing">
 		<p>Maybe you want to clean up partial commits you made along the way</p>
-		<pre>$ git rebase -i</pre>
+		<pre>$ git rebase -i staging</pre>
 	</section>
 	<section class="slide" id="merging">
-		<p>Merge into <strong>Staging</strong> just as you had been.</p>
+		<p>Merge into <strong>Staging</strong>, not master.</p>
 	</section>
 </section>
 
