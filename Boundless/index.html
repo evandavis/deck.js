@@ -51,19 +51,23 @@ $ git add .
 $ git add -A
 
 # remove something you've added
-$ git reset HEAD <file>
+$ git reset HEAD &lt;file&gt;
 
 # delete a branch
-$ git branch -d <branch_name>
+$ git branch -d &lt;branch_name&gt;
 
-# fetch changes from the server without changing your working copy
-$ git fetch			# note this will fetch all branches of the repo
+# fetch changes from the server 
+# without changing your working copy
+$ git fetch			
+# note this will fetch all branches of the repo
+# for which you have a local copy
 
 # undo a local merge; get the hash from running git log
-$ git reset --hard <commit_hash>
+$ git reset --hard &lt;commit_hash&gt;
 
 # undo a merge that has been PUSHED
-$ git revert -m 1 <commit_hash>
+# assuming it is the last thing you pushed
+$ git revert -m 1 &lt;commit_hash&gt;
 	</pre></code>
 </section>
 
@@ -140,7 +144,7 @@ $ git revert -m 1 <commit_hash>
 		<p>Make a branch:</p>
 		<pre>
 $ git checkout staging 
-$ git checkout -b NAME
+$ git checkout -b feature/BRANCH_NAME
 		</pre>
 	</section>
 	<section class="slide" id="updating">
@@ -157,6 +161,43 @@ $ git pull -f origin staging && git pull -f origin master
 	<section class="slide" id="merging">
 		<p>Merge into <strong>Staging</strong>, not master.</p>
 	</section>
+</section>
+
+<section class="slide" id="publishing">
+	<h2>Publishing</h2>
+	<p>You've merged into staging, tests passed, visual inspection passed, and (ideally) someone has peer-reviewed your changes.</p>
+
+	<p>You are now free to merge your feature branch into Master.</p>
+	<pre><code>
+$ git co master
+$ git merge --no-ff feature/BRANCH_NAME
+# resolve any merge conflicts using p4v
+$ git push
+	</code></pre>
+</section>
+
+<section class="slide" id="hotfix">
+	<h2>Oh shit!</h2>
+	<p>You broke something. What do you do?</p>
+
+	<p>From <strong>MASTER</strong></p>
+	<pre><code>
+$ git co -b hotfix/BRANCH_NAME
+# ... fix fix fix ...
+$ git commit -am "I fixed it!"
+$ git co master
+$ git merge --no-ff hotfix/BRANCH_NAME
+$ git push
+
+# if it's fixed, make sure it gets to staging
+$ git co staging
+$ git merge --no-ff hotfix/BRANCH_NAME
+	</code></pre>
+</section>
+
+<section class="slide" id="questions">
+	<h2>Any Questions?</h2>
+	<p>(Yes, we can still talk about interactive rebasing.)</p>
 </section>
 
 <!-- deck.navigation snippet -->
