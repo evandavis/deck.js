@@ -51,19 +51,23 @@ $ git add .
 $ git add -A
 
 # remove something you've added
-$ git reset HEAD <file>
+$ git reset HEAD &lt;file&gt;
 
 # delete a branch
-$ git branch -d <branch_name>
+$ git branch -d &lt;branch_name&gt;
 
-# fetch changes from the server without changing your working copy
-$ git fetch			# note this will fetch all branches of the repo
+# fetch changes from the server 
+# without changing your working copy
+$ git fetch			
+# note this will fetch all branches of the repo
+# for which you have a local copy
 
 # undo a local merge; get the hash from running git log
-$ git reset --hard <commit_hash>
+$ git reset --hard &lt;commit_hash&gt;
 
 # undo a merge that has been PUSHED
-$ git revert -m 1 <commit_hash>
+# assuming it is the last thing you pushed
+$ git revert -m 1 &lt;commit_hash&gt;
 	</pre></code>
 </section>
 
